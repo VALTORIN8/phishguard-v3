@@ -317,7 +317,9 @@ globalThis.PhishGuardRules = globalThis.PhishGuardRules || (() => {
         signals:signals.sort((a, b) => b.pts - a.pts), checked:URL_CHECKS};
     } catch (e) {return {ok:false, error:e.message || "Invalid URL", checked:[], signals:[]};}
   }
+
   function riskBand(score) {return score >= HIGH_RISK ? "high" : score >= REVIEW_RISK ? "review" : "low";}
+
   function emailScore(rawText) {
     if (typeof rawText !== "string" || rawText.trim().length < 15) {
       return {ok: false, error: "Please paste a longer email to analyze."};
@@ -350,6 +352,6 @@ globalThis.PhishGuardRules = globalThis.PhishGuardRules || (() => {
     const score = Math.min(100, signals.reduce((n, s) => n + s.pts, 0));
     return {ok: true, score, signals: signals.sort((a, b) => b.pts - a.pts)};
   }
-  return Object.freeze({HIGH_RISK, REVIEW_RISK, URL_CHECKS, BRANDS, urlScore, riskBand, splitHost, registrableDomain,
-    sameSite, isLoopback, officialHost, punyDecode, idnSkeleton});
+
+  return Object.freeze({HIGH_RISK, REVIEW_RISK, URL_CHECKS, BRANDS, urlScore, emailScore, riskBand, splitHost, registrableDomain, sameSite, isLoopback, officialHost, punyDecode, idnSkeleton});
 })();
