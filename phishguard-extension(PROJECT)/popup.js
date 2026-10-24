@@ -383,6 +383,25 @@ byId("btnScan").addEventListener("click", () => {
 });
 byId("manualUrl").addEventListener("keydown", e => { if (e.key === "Enter") byId("btnScan").click(); });
 document.querySelectorAll(".demo").forEach(btn => btn.addEventListener("click", () => { byId("manualUrl").value = btn.dataset.u; byId("btnScan").click(); }));
+
+// --- NEW: Email Scanner Logic ---
+function renderEmailManual(result) {
+  if (!result?.ok) {
+    byId("emailOut").innerHTML = `<div class="card result-card"><span class="empty warn">⚠ ${escapeHtml(result?.error || "Scan failed.")}</span></div>`;
+    return;
+  }
+  const risk = riskLevel(result.score);
+  const badge = risk.label === "LOW RISK" ? "LOW EMAIL RISK" : risk.label;
+  byId("emailOut").innerHTML = `<section class="card result-card"><div class="result-head"><div><div class="result-domain">Email Analysis</div><div class="result-meta">Text heuristics</div></div><div class="result-score" style="color:${risk.color}">${result.score}<span class="metric-unit">/100</span></div></div><div class="result-verdict" style="color:${risk.color}">${badge}</div><p class="hint">Analyzed locally based on common phishing text patterns.</p><div class="evidence result-evidence">${result.signals.length ? result.signals.map(s => `<div class="ev"><div class="ev-copy"><h4>${escapeHtml(s.title)} <small class="points">+${escapeHtml(s.pts)} points</small></h4><p>${escapeHtml(s.desc)}</p></div><span class="pill ${severityClass(s.severity)}">${escapeHtml(s.severity)}</span></div>`).join("") : '<div class="empty">✓ No concerning email patterns found in the provided text.</div>'}</div></section>`;
+}
+
+byId("btnScanEmail").addEventListener("click", () => {
+  const input = byId("manualEmail").value.trim();
+  if (!input) { byId("emailOut").innerHTML = `<div class="card result-card"><span class="empty warn">⚠ Enter email text first.</span></div>`; return; }
+  renderEmailManual(RULES.emailScore(input));
+});
+// --------------------------------
+
 byId("btnClearHist").addEventListener("click", () => showDialog({
   icon:"◷", title:"Clear scan history?", text:"This permanently removes locally saved scan results on this browser.",
   confirm:"Clear history", cancel:true, danger:true,

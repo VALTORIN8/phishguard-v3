@@ -318,7 +318,38 @@ globalThis.PhishGuardRules = globalThis.PhishGuardRules || (() => {
     } catch (e) {return {ok:false, error:e.message || "Invalid URL", checked:[], signals:[]};}
   }
   function riskBand(score) {return score >= HIGH_RISK ? "high" : score >= REVIEW_RISK ? "review" : "low";}
+  function emailScore(rawText) {
+    if (typeof rawText !== "string" || rawText.trim().length < 15) {
+      return {ok: false, error: "Please paste a longer email to analyze."};
+    }
+    const lower = rawText.toLowerCase();
+    const signals = [];
+    const add = (id, title, desc, severity, pts) => signals.push({id, title, desc, severity, pts, source:"email"});
 
+    // 1. Generic Greetings
+    if (/(dear|hello|hi)\s+(customer|user|member|account holder|client)/i.test(lower)) {
+      add("greeting", "Generic Greeting", "Phishing emails often lack your real name and use generic greetings like 'Dear Customer'.", "Medium", 20);
+    }
+    
+    // 2. Financial & Credential Lures
+    if (/(invoice|payment|wire transfer|gift card|crypto|wallet|password|login|verify identity)/i.test(lower)) {
+      add("financial", "Financial or Credential Request", "The email asks for money, credentials, or mentions invoices. Always verify via official channels, not email links.", "High", 30);
+    }
+
+    // 3. Urgency & Threats (Reusing your existing PRESSURE_WORDS)
+    const urgencyFound = PRESSURE_WORDS.filter(w => lower.includes(w));
+    if (urgencyFound.length > 0) {
+      add("urgency", "Urgent or Threatening Language", `Contains high-pressure words: ${urgencyFound.slice(0, 3).join(", ")}. Attackers use this to cause panic.`, "High", 25);
+    }
+
+    // 4. URL Shorteners
+    if (/(bit\.ly|tinyurl|t\.co|cutt\.ly)/i.test(lower)) {
+      add("shortlink", "URL Shortener Detected", "URL shorteners are often used in emails to hide the true destination of a malicious link.", "Medium", 20);
+    }
+
+    const score = Math.min(100, signals.reduce((n, s) => n + s.pts, 0));
+    return {ok: true, score, signals: signals.sort((a, b) => b.pts - a.pts)};
+  }
   return Object.freeze({HIGH_RISK, REVIEW_RISK, URL_CHECKS, BRANDS, urlScore, riskBand, splitHost, registrableDomain,
     sameSite, isLoopback, officialHost, punyDecode, idnSkeleton});
 })();

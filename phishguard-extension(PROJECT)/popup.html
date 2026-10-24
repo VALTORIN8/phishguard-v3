@@ -15,6 +15,7 @@
       <button class="nav active" data-view="overview"><span class="nav-emoji">◈</span>Overview</button>
       <button class="nav" data-view="analysis"><span class="nav-emoji">◎</span>Analysis</button>
       <button class="nav" data-view="scanner"><span class="nav-emoji">⌕</span>URL Scanner</button>
+      <button class="nav" data-view="email"><span class="nav-emoji">📝</span>Email Scanner</button>
       <button class="nav" data-view="history"><span class="nav-emoji">◷</span>History</button>
       <button class="nav" data-view="settings"><span class="nav-emoji">⚙</span>Settings</button>
       <button class="nav" data-view="contact"><span class="nav-emoji">✉</span>Contact Dev</button>
@@ -76,6 +77,19 @@
       <div class="card scanner-card"><label class="field-label" for="manualUrl">WEBSITE ADDRESS</label><div class="scan-box"><input id="manualUrl" type="text" placeholder="https://example.com" spellcheck="false"><button id="btnScan" class="btn primary">Scan URL ↗</button></div><p class="hint">URL-only checks: page forms and text cannot be examined without visiting it.</p></div>
       <div id="manualOut" role="status" aria-live="polite"></div>
       <div class="card demo-card"><div class="section-top"><div><h2>Try sample addresses</h2><p>Examples to demonstrate detection rules, not verified threat reports</p></div></div><div class="demos"><button class="demo" data-u="https://www.amazon.in">↗ amazon.in</button><button class="demo" data-u="https://amaz0n-secure-login.xyz/verify">↗ Lookalike Amazon</button><button class="demo" data-u="https://www.paypal.com">↗ paypal.com</button><button class="demo" data-u="https://paypa1-secure.xyz/login">↗ Lookalike PayPal</button><button class="demo" data-u="https://github.com">↗ github.com</button><button class="demo" data-u="http://secure-bank-login.tk/verify">↗ Unencrypted sign-in</button></div></div>
+    </section>
+
+    <section id="view-email" class="view">
+      <header class="head"><div><div class="eyebrow">INVESTIGATE</div><h1>Scan an Email.</h1><p class="sub">Paste email content to check for phishing lures.</p></div></header>
+      <div class="card scanner-card">
+        <label class="field-label" for="manualEmail">EMAIL CONTENT (BODY OR HEADERS)</label>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <textarea id="manualEmail" class="inp area" placeholder="Paste the email text here..." spellcheck="false" style="min-height: 120px;"></textarea>
+          <button id="btnScanEmail" class="btn primary" style="align-self: flex-end;">Scan Email Text ↗</button>
+        </div>
+        <p class="hint">Analyzes text locally for urgency, financial lures, and suspicious patterns.</p>
+      </div>
+      <div id="emailOut" role="status" aria-live="polite"></div>
     </section>
 
     <section id="view-history" class="view"><header class="head"><div><div class="eyebrow">RECENT ACTIVITY</div><h1>Scan history.</h1><p class="sub">Only saved in your Chrome local storage.</p></div><button class="btn outline-small" id="btnClearHist">Clear history</button></header><div class="card history-card"><div class="table-scroll"><table class="hist"><thead><tr><th>Website</th><th>Verdict</th><th>Risk</th><th>Coverage</th><th>Time</th></tr></thead><tbody id="histBody"></tbody></table></div></div></section>
