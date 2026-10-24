@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PhishGuard · Security overview</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="logo" aria-hidden="true">🛡</div><div class="brand-copy"><div class="brand-name">PhishGuard<span class="brand-dot">.</span></div><div class="brand-tag">Think before you click</div></div></div>
+    <div class="nav-caption">WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <button class="nav active" data-view="overview"><span class="nav-emoji">◈</span>Overview</button>
+      <button class="nav" data-view="analysis"><span class="nav-emoji">◎</span>Analysis</button>
+      <button class="nav" data-view="scanner"><span class="nav-emoji">⌕</span>URL Scanner</button>
+      <button class="nav" data-view="history"><span class="nav-emoji">◷</span>History</button>
+      <button class="nav" data-view="settings"><span class="nav-emoji">⚙</span>Settings</button>
+      <button class="nav" data-view="contact"><span class="nav-emoji">✉</span>Contact Dev</button>
+    </nav>
+    <div class="side-foot"><div class="health"><span class="status-dot"></span><span id="sidebarStatus">Local protection active</span></div><p>ON-DEVICE ANALYSIS</p><small>No server upload · v3.5.1</small></div>
+  </aside>
+
+  <main class="main">
+    <section id="view-overview" class="view show">
+      <header class="head">
+        <div><div class="eyebrow">SECURITY DASHBOARD <span class="eyebrow-line"></span> LIVE SCAN</div><h1>Your browsing, clearer.</h1><p class="sub">Local phishing indicators for this website.</p></div>
+        <div class="header-tools"><label class="protection"><span class="switch"><input type="checkbox" id="wlToggle" checked aria-label="Enable local warnings globally" title="Pause or resume warnings on all websites"><span class="slider"></span></span><span id="wlLabel">On</span></label><button class="btn trust-quick" id="btnQuickTrust" disabled title="Suppress warnings on this exact hostname">Trust this site</button></div>
+      </header>
+
+      <section class="hero card" aria-label="Website scan result">
+        <div class="site-line"><span class="site-icon">◎</span><div class="site-copy"><div class="site-kicker">CURRENT WEBSITE</div><div id="domName" class="dom-name">Finding active tab…</div><div id="scanTime" class="scan-time" aria-live="polite">Starting fresh scan…</div></div><span id="scanTag" class="scan-tag scanning" role="status" aria-live="polite"><span class="scan-spinner" aria-hidden="true"></span> SCANNING</span></div>
+        <div class="hero-bottom">
+          <div class="verdict"><div class="ver-label">ASSESSMENT</div><div class="ver-row"><span id="verIcon" class="ver-icon">◌</span><span id="verTitle" class="ver-title">Analyzing…</span></div><p id="verDesc">Running local URL and page checks…</p><div class="signals-line"><span class="signal-dot"></span><span id="sigCount">—</span> indicators found</div></div>
+          <div class="risk-panel"><div class="risk-ring" id="ring"><div class="ring-center"><strong id="scoreNum">—</strong><small>/100</small></div></div><div class="risk-caption">RISK SCORE<small>Suspicion level</small></div></div>
+        </div>
+      </section>
+
+      <div class="metric-grid">
+        <section class="metric card" aria-label="Risk score"><div class="metric-top"><span class="metric-icon risk-icon">◆</span><span class="metric-title">Risk</span></div><div class="metric-val"><span id="riskText">Not assessed</span></div><p>How suspicious the detected behavior looks.</p></section>
+        <section class="metric card" aria-label="Evidence quality"><div class="metric-top"><span class="metric-icon trust-icon">✦</span><span class="metric-title">Evidence quality <span class="help" title="Describes how much supporting evidence was available, not statistical reliability or accuracy.">ⓘ</span></span></div><div class="metric-val quality-value"><span id="confNum">Checking</span></div><p id="confExplain">Describes evidence, not prediction accuracy.</p></section>
+        <section class="metric card" aria-label="Scan coverage"><div class="metric-top"><span class="metric-icon coverage-icon">▦</span><span class="metric-title">Coverage <span class="help" title="The number of defined local checks successfully completed, out of eight.">ⓘ</span></span></div><div class="metric-val"><span id="coverageNum">—</span><span class="metric-unit">/8 checks</span></div><div class="meter-track"><div id="coverageBar" class="meter-fill coverage-fill"></div></div><p id="coverageExplain">Checking what can be inspected…</p></section>
+      </div>
+
+      <section class="card checks-card"><div class="section-top"><div><h2>Scan coverage</h2><p>Exactly what PhishGuard checked</p></div><span class="section-badge" id="checksStatus">Not started</span></div><div class="checks-grid" id="checksGrid" aria-live="polite"></div></section>
+
+      <div class="summary-strip card">
+        <div class="summary-glyph" aria-hidden="true">✦</div>
+        <div class="summary-copy"><strong id="summaryTitle">Scan summary</strong><span id="summaryText">Findings are being prepared.</span></div>
+        <div class="summary-actions"><button id="btnRescan" class="btn subtle" title="Run a fresh scan of this tab">↻ Rescan</button><button id="btnOpenAnalysis" class="btn ghost">Details →</button></div>
+      </div>
+      <p class="disclaimer">Local heuristics, not live threat intelligence. Low risk does not guarantee safety. Evidence quality is not a measured accuracy rate.</p>
+    </section>
+
+    <section id="view-analysis" class="view">
+      <header class="head"><div><div class="eyebrow">TRANSPARENT RESULTS</div><h1>Evidence &amp; next steps.</h1><p class="sub">Understand the clues behind the score and export the report.</p></div></header>
+      <div class="bottom-grid">
+        <section class="card evidence-card"><div class="section-top"><div><h2>Findings</h2><p>Why this score was assigned</p></div><span class="section-badge" id="findingCount">—</span></div><div id="evidence" class="evidence"><div class="empty">Waiting for results…</div></div></section>
+        <section class="card actions-card"><div class="section-top"><div><h2>Next steps</h2><p>Stay in control</p></div></div><div id="guideBox" class="guide">Never enter credentials on an unverified site.</div><button class="btn primary" id="btnExport">⧉ &nbsp; Copy security report</button><button class="btn ghost" id="btnReport">⚑ &nbsp; Mark false positive</button><button class="btn subtle" id="btnSandbox">↗ &nbsp; Safer testing tips</button></section>
+      </div>
+      <section class="card destination-card" aria-label="Password destination inspection">
+        <div class="section-top"><div><h2>Where would a password be sent?</h2><p>Declared form endpoints only — no passwords or input values are read.</p></div><span class="section-badge" id="destinationStatus">Awaiting scan</span></div>
+        <div id="destinationList" class="destination-list"><p class="hint">Inspecting password forms…</p></div>
+        <p class="hint">JavaScript may submit to a different URL. These are declared destinations, not verified network traffic. No credentials are collected.</p>
+      </section>
+      <section class="card checks-explained" aria-label="What was checked">
+        <div class="section-top"><div><h2>How the checks work</h2><p>What each check inspected and why it matters</p></div><span class="section-badge" id="explainStatus">Awaiting scan</span></div>
+        <div id="explainGrid" class="explain-grid"></div>
+      </section>
+      <div class="limitations"><span>ⓘ</span><p>These are local heuristic rules, not a live threat database. A completed check means it ran, not that every attack can be detected. PhishGuard never reads values typed into forms.</p></div>
+    </section>
+
+    <section id="view-scanner" class="view">
+      <header class="head"><div><div class="eyebrow">INVESTIGATE</div><h1>Inspect a link.</h1><p class="sub">Check URL clues without opening the destination.</p></div></header>
+      <div class="card scanner-card"><label class="field-label" for="manualUrl">WEBSITE ADDRESS</label><div class="scan-box"><input id="manualUrl" type="text" placeholder="https://example.com" spellcheck="false"><button id="btnScan" class="btn primary">Scan URL ↗</button></div><p class="hint">URL-only checks: page forms and text cannot be examined without visiting it.</p></div>
+      <div id="manualOut" role="status" aria-live="polite"></div>
+      <div class="card demo-card"><div class="section-top"><div><h2>Try sample addresses</h2><p>Examples to demonstrate detection rules, not verified threat reports</p></div></div><div class="demos"><button class="demo" data-u="https://www.amazon.in">↗ amazon.in</button><button class="demo" data-u="https://amaz0n-secure-login.xyz/verify">↗ Lookalike Amazon</button><button class="demo" data-u="https://www.paypal.com">↗ paypal.com</button><button class="demo" data-u="https://paypa1-secure.xyz/login">↗ Lookalike PayPal</button><button class="demo" data-u="https://github.com">↗ github.com</button><button class="demo" data-u="http://secure-bank-login.tk/verify">↗ Unencrypted sign-in</button></div></div>
+    </section>
+
+    <section id="view-history" class="view"><header class="head"><div><div class="eyebrow">RECENT ACTIVITY</div><h1>Scan history.</h1><p class="sub">Only saved in your Chrome local storage.</p></div><button class="btn outline-small" id="btnClearHist">Clear history</button></header><div class="card history-card"><div class="table-scroll"><table class="hist"><thead><tr><th>Website</th><th>Verdict</th><th>Risk</th><th>Coverage</th><th>Time</th></tr></thead><tbody id="histBody"></tbody></table></div></div></section>
+
+    <section id="view-settings" class="view"><header class="head"><div><div class="eyebrow">PREFERENCES</div><h1>Settings.</h1><p class="sub">Manage trusted sites and local data.</p></div></header><div class="card settings-card"><h2>Privacy first</h2><p>All checks run locally in your browser. No URLs or browsing history are uploaded by PhishGuard. Results are heuristic, not real-time blacklist queries.</p>
+      <div class="privacy-state"><strong>Global warning protection</strong><small id="globalProtectionState">Loading global preference…</small></div>
+      <hr><h2>Why these permissions?</h2><p>PhishGuard needs access to pages to inspect the current URL, password-form structure, and warning signals. It does not read typed passwords. It no longer requests the separate “tabs” permission.</p>
+      <div class="permission-grid"><div><strong>Website access</strong><span>Inspect URLs and form metadata on HTTP(S) pages; may show an in-page warning.</span></div><div><strong>Storage</strong><span>Keep your on/off setting, trusted hostnames, and local scan history.</span></div><div><strong>Scripting</strong><span>Reconnect inspection on tabs open before installing or reloading the extension.</span></div></div>
+      <p class="hint">Chrome's &lt;all_urls&gt; permission is broad; this feature requires access to pages you visit. Disable or uninstall the extension to revoke this access.</p><hr><h2>Trusted sites</h2><p>Trusting a hostname suppresses PhishGuard warnings on that <strong>exact hostname</strong> (not its subdomains). A trusted site is not necessarily safe. Scans stay available.</p>
+      <div class="trust-current"><div><span class="field-label">CURRENT WEBSITE</span><strong id="trustCurrentHost">No inspectable website</strong><small id="trustCurrentStatus">Open a website to manage it here.</small></div><button class="btn primary" id="btnTrustCurrent" disabled>Trust site</button></div>
+      <label class="field-label" for="trustHostInput">ADD A HOSTNAME OR URL</label>
+      <div class="trust-add"><input id="trustHostInput" class="inp" type="text" placeholder="example.com or https://example.com" spellcheck="false" autocomplete="off"><button class="btn ghost" id="btnAddTrust">Add site</button></div>
+      <p class="hint">Only exact hostnames are trusted. Never add a site merely because it claims to be official.</p>
+      <div class="trusted-head"><h3>Trusted hostnames <span id="trustedCount" class="muted-count">(0)</span></h3><button class="btn subtle" id="btnClearWl" disabled>Clear all</button></div>
+      <div id="wlList" class="wl-list" aria-live="polite">No trusted sites yet.</div><hr><h2>Extension version</h2><p>PhishGuard 3.5.1 · Live page heuristics</p><button class="btn ghost" id="btnUpdates">How to update ↗</button></div></section>
+
+    <section id="view-contact" class="view"><header class="head"><div><div class="eyebrow">GET IN TOUCH</div><h1>Contact developer.</h1><p class="sub">Found a bug or a false positive? Let us know.</p></div></header><div class="card contact-card"><label class="field-label" for="cName">YOUR NAME</label><input id="cName" class="inp" placeholder="Your name"><label class="field-label" for="cEmail">EMAIL (OPTIONAL)</label><input id="cEmail" class="inp" type="email" placeholder="you@example.com"><label class="field-label" for="cMsg">MESSAGE</label><textarea id="cMsg" class="inp area" placeholder="Describe the issue or feature request…"></textarea><button class="btn primary" id="btnContact">Compose email ↗</button><p id="contactError" class="contact-error" role="alert" hidden></p><p class="hint">Opens your mail app; nothing is automatically submitted.</p></div></section>
+  </main>
+</div>
+<div class="dialog-overlay" id="pgDialog" hidden>
+  <div class="dialog-box" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogText" tabindex="-1">
+    <button id="dialogClose" class="dialog-x" aria-label="Close dialog">×</button>
+    <div class="dialog-icon" id="dialogIcon">ⓘ</div>
+    <h2 id="dialogTitle">PhishGuard</h2>
+    <p id="dialogText"></p>
+    <ol id="dialogSteps" class="dialog-steps"></ol>
+    <div class="dialog-actions"><button class="btn ghost" id="dialogCancel">Cancel</button><button class="btn primary" id="dialogConfirm">Continue</button></div>
+  </div>
+</div>
+<div id="pgToast" class="pg-toast" role="status" aria-live="polite" hidden></div>
+<script src="rules.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
